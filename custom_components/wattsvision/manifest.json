@@ -1,0 +1,10 @@
+{
+  "domain": "wattsvision",
+  "name": "Watts Vision",
+  "version": "0.1.0",
+  "config_flow": true,
+  "iot_class": "cloud_polling",
+  "documentation": "https://github.com/jebonspt/ha-wattsvision",
+  "requirements": [],
+  "codeowners": ["@jebonspt"]
+}
