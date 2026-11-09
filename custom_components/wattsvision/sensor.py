@@ -1,14 +1,20 @@
 from homeassistant.components.sensor import SensorEntity
 
+from .const import DOMAIN
+
 
 async def async_setup_entry(
     hass,
     entry,
     async_add_entities,
 ):
+    coordinator = hass.data[DOMAIN][entry.entry_id]
+
     async_add_entities(
         [
-            WattsVisionStatusSensor()
+            WattsVisionStatusSensor(
+                coordinator
+            )
         ]
     )
 
@@ -16,9 +22,22 @@ async def async_setup_entry(
 class WattsVisionStatusSensor(
     SensorEntity
 ):
-    _attr_name = "Watts Vision Status"
-    _attr_unique_id = "wattsvision_status"
+    def __init__(
+        self,
+        coordinator,
+    ):
+        self.coordinator = coordinator
+
+    @property
+    def name(self):
+        return "Watts Vision Status"
+
+    @property
+    def unique_id(self):
+        return "wattsvision_status"
 
     @property
     def native_value(self):
-        return "Integration Loaded"
+        return (
+            self.coordinator.data["data"]["label"]
+        )
