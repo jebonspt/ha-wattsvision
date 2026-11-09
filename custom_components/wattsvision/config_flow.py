@@ -4,7 +4,7 @@ import voluptuous as vol
 from .const import DOMAIN
 
 
-class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class WattsVisionConfigFlow(config_entries.ConfigFlow):
     VERSION = 1
 
     async def async_step_user(self, user_input=None):
@@ -23,3 +23,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 }
             ),
         )
+
+
+config_entries.HANDLERS.register(
+    DOMAIN,
+    WattsVisionConfigFlow,
+)
