@@ -1,3 +1,5 @@
+import logging
+
 from datetime import timedelta
 
 from homeassistant.helpers.update_coordinator import (
@@ -5,6 +7,8 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .api import WattsVisionApi
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class WattsVisionCoordinator(DataUpdateCoordinator):
@@ -19,21 +23,19 @@ class WattsVisionCoordinator(DataUpdateCoordinator):
             password,
         )
 
-import logging
+        super().__init__(
+            hass,
+            _LOGGER,
+            name="Watts Vision",
+            update_interval=timedelta(minutes=2),
+        )
 
-from datetime import timedelta
+    async def _async_update_data(self):
+        data = await self.api.get_smarthome()
 
-from homeassistant.helpers.update_coordinator import (
-    DataUpdateCoordinator,
-)
+        _LOGGER.warning(
+            "WATTS DATA: %s",
+            data,
+        )
 
-from .api import WattsVisionApi
-
-_LOGGER = logging.getLogger(__name__)
-
-super().__init__(
-    hass,
-    _LOGGER,
-    name="Watts Vision",
-    update_interval=timedelta(minutes=2),
-)
+        return data
